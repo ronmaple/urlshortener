@@ -1,8 +1,9 @@
 'use strict';
 
-var express = require('express');
-var mongo = require('mongodb');
-var mongoose = require('mongoose');
+const express = require('express');
+const mongo = require('mongodb');
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
 
 var cors = require('cors');
 
@@ -14,14 +15,12 @@ var port = process.env.PORT || 3000;
 /** this project needs a db !! **/ 
 mongoose.connect(process.env.MONGOLAB_URI);
 
-// notify if connection is successful
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-
+const urlSchema = new Schema({
+  originalUrl: String,
+  count: Number
 });
 
-
+const UrlEntry = mongoose.model('UrlEntry', urlSchema);
 
 app.use(cors());
 
