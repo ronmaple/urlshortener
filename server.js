@@ -11,6 +11,8 @@ const cors = require('cors');
 
 const app = express();
 
+let count = 0;
+
 // mount body-parser
 app.use(bp.urlencoded({extended: false}));
 
@@ -31,16 +33,18 @@ const UrlEntry = mongoose.model('UrlEntry', urlSchema);
 const createEntry = function(url) {
   console.log('url in createEntry', url);
   let newEntry = new UrlEntry({
-    id: 0,
+    id: count,
     originalUrl: url
   })
+  count++;
   newEntry.save();
 }
 
-// find latest id, and append it to i
+// find latest id, and append it to counter
 // keep track of count for mongodb shortener
 const counter = function() {
-
+  // let count = UrlEntry.find().sort({_id:-1});
+  
 }
 
 app.use(cors());
@@ -70,7 +74,8 @@ app.post('/api/shorturl/new', (req, res) => {
   dns.lookup(url, (err, address, family) => {
     // if address exists -> perform mdb functions
     if (address != undefined) {
-      createEntry(url);
+      // createEntry(url);
+      counter();
     }
   });
 })
