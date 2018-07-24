@@ -21,11 +21,27 @@ const port = process.env.PORT || 3000;
 mongoose.connect(process.env.MONGOLAB_URI);
 
 const urlSchema = new Schema({
-  originalUrl: String,
-  count: Number
+  id: Number,
+  originalUrl: String
 });
 
 const UrlEntry = mongoose.model('UrlEntry', urlSchema);
+
+// helper functions
+const createEntry = function(url) {
+  console.log('url in createEntry', url);
+  let newEntry = new UrlEntry({
+    id: 0,
+    originalUrl: url
+  })
+  newEntry.save();
+}
+
+// find latest id, and append it to i
+// keep track of count for mongodb shortener
+const counter = function() {
+
+}
 
 app.use(cors());
 
@@ -54,12 +70,7 @@ app.post('/api/shorturl/new', (req, res) => {
   dns.lookup(url, (err, address, family) => {
     // if address exists -> perform mdb functions
     if (address != undefined) {
-      console.log('url in dns', url);
-      let newEntry = new UrlEntry({
-        originalUrl: url,
-        count: 2
-      })
-      newEntry.save();
+      createEntry(url);
     }
   });
 })
