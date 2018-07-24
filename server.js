@@ -74,8 +74,8 @@ app.post('/api/shorturl/new', (req, res) => {
   dns.lookup(url, (err, address, family) => {
     // if address exists -> perform mdb functions
     if (address != undefined) {
-      // createEntry(url);
-      counter();
+      createEntry(url);
+      // counter();
     }
   });
 })
