@@ -4,10 +4,12 @@ const express = require('express');
 const mongo = require('mongodb');
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
+const bp = require('body-parser');
+const dns = require('dns')
 
-var cors = require('cors');
+const cors = require('cors');
 
-var app = express();
+const app = express();
 
 // Basic Configuration 
 var port = process.env.PORT || 3000;
@@ -39,9 +41,23 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
-// app.post // 
-app.post('', (req, res) => {
+// app.post // url -> check DNS -> check if exists in MDB-> enter / get from MDB
+app.post('/api/shorturl/new', (req, res) => {
+  console.log('req.body', req.body);
 
+  let url = req.body.url;
+  console.log('url', req.body.url);
+  
+  dns.lookup(url, (err, address, family) => {
+    // if address exists -> perform mdb functions
+    if (address != undefined) {
+      console.log('url in dns', url);
+      let newEntry = new UrlEntry({
+        originalUrl: url,
+        count: 1
+      })
+    }
+  });
 })
 
 
