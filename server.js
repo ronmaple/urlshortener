@@ -59,10 +59,13 @@ function counter(url) {
         const { id } = data[0];
         count = id + 1;
       });
+  
+  return count;
 }
 // helper functions
 const createEntry = function(url) {
   console.log('url in createEntry', url);
+  console.log('count in createEntry', count);
   let exists = checkIfExists(url);
   
   if (!exists) {
@@ -73,10 +76,18 @@ const createEntry = function(url) {
       originalUrl: url
     });
     
-    lettentry.originalUrl;
+    let original_url = entry.originalUrl;
+    let num = entry.id;
+    
     results = {
+      original_url,
+      count: num
     }
+    
     entry.save();
+    
+    return results;
+
   } else if (exists) {
     
   }
@@ -111,7 +122,8 @@ app.post('/api/shorturl/new', (req, res) => {
   dns.lookup(url, (err, address, family) => {
     // if address exists -> perform mdb functions
     if (address != undefined) {
-      createEntry(url);
+      let results = createEntry(url);
+      res.json(results);
     }
   });
 })
