@@ -33,15 +33,13 @@ const UrlEntry = mongoose.model('UrlEntry', urlSchema);
 const createEntry = function(url) {
   console.log('url in createEntry', url);
   
-  const query = UrlEntry.findOne({$arrayElemAt: -1}, (err, data) => {
-    console.log(data);
-  })
-  // let newEntry = new UrlEntry({
-  //   id: count,
-  //   originalUrl: url
-  // // })
-  // count++;
-  // newEntry.save();
+  const query = UrlEntry.find({}).sort({id: -1}).exec( (err, data) => {
+    if (err) console.error(err);
+    const { id } = data[0];
+    count = id;
+    console.log('count', count);
+  });
+
 }
 
 // find latest id, and append it to counter
