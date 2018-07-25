@@ -31,11 +31,14 @@ const UrlEntry = mongoose.model('UrlEntry', urlSchema);
 
 function checkIfExists(url) {
   console.log('checkIfExists called, url:', url);
-  var check = UrlEntry.find({originalUrl: url}, (err, data) => {
-    if (err) console.error(err);
-    
-    console.log('checkIfExists', data);
-  })
+  console.log(typeof url);
+  UrlEntry
+    .find({ originalUrl: 'www.reddit.com' })
+    .exec( function(err, data) {
+      console.log('url inside', url);
+      if (err) console.error(err);
+      console.log('checkIfExists', data);
+    });
 }
 // helper functions
 const createEntry = function(url) {
