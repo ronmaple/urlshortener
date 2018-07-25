@@ -32,6 +32,10 @@ const UrlEntry = mongoose.model('UrlEntry', urlSchema);
 // helper functions
 const createEntry = function(url) {
   console.log('url in createEntry', url);
+  
+  const query = UrlEntry.find({ originalUrl: 'www.wikipedia.com'}, (err, data) => {
+    console.log(data);
+  })
   let newEntry = new UrlEntry({
     id: count,
     originalUrl: url
