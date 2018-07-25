@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 const bp = require('body-parser');
 const dns = require('dns')
-
+mongoose.set('debug', true);
 const cors = require('cors');
 
 const app = express();
@@ -29,25 +29,29 @@ const urlSchema = new Schema({
 
 const UrlEntry = mongoose.model('UrlEntry', urlSchema);
 
+function checkIfExists(url) {
+  console.log('checkIfExists called, url:', url);
+  var check = UrlEntry.find({originalUrl: url}, (err, data) => {
+    if (err) console.error(err);
+    
+    console.log('checkIfExists', data);
+  })
+}
 // helper functions
 const createEntry = function(url) {
   console.log('url in createEntry', url);
-  
-  const query = UrlEntry.find({}).sort({id: -1}).exec( (err, data) => {
+  checkIfExists(url);
+  // check latest entry, add +1 to global variable count
+  var counter = UrlEntry.find({}).sort({id: -1}).exec( (err, data) => {
     if (err) console.error(err);
     const { id } = data[0];
-    count = id;
+    count = id + 1;
     console.log('count', count);
   });
-
-}
-
-// find latest id, and append it to counter
-// keep track of count for mongodb shortener
-const counter = function() {
-  // let count = UrlEntry.find().sort({_id:-1});
+  
   
 }
+
 
 app.use(cors());
 
@@ -77,7 +81,6 @@ app.post('/api/shorturl/new', (req, res) => {
     // if address exists -> perform mdb functions
     if (address != undefined) {
       createEntry(url);
-      // counter();
     }
   });
 })
