@@ -12,6 +12,7 @@ const cors = require('cors');
 const app = express();
 
 let count = 0;
+let results = {}
 
 // mount body-parser
 app.use(bp.urlencoded({extended: false}));
@@ -38,20 +39,47 @@ function checkIfExists(url) {
       console.log('url inside', url);
       if (err) console.error(err);
       console.log('checkIfExists', data);
+    
+      // if empty array ==> doesn't exist, return false
+      if (data === []) {
+        return false;
+      } else { 
+        return true; 
+      }
     });
+}
+
+function counter(url) {
+  console.log('inside counter');
+    UrlEntry
+      .find({})
+      .sort({id: -1})
+      .exec( (err, data) => {
+        if (err) console.error(err);
+        const { id } = data[0];
+        count = id + 1;
+      });
 }
 // helper functions
 const createEntry = function(url) {
   console.log('url in createEntry', url);
-  checkIfExists(url);
-  // check latest entry, add +1 to global variable count
-  var counter = UrlEntry.find({}).sort({id: -1}).exec( (err, data) => {
-    if (err) console.error(err);
-    const { id } = data[0];
-    count = id + 1;
-    console.log('count', count);
-  });
+  let exists = checkIfExists(url);
   
+  if (!exists) {
+    counter(url);
+    console.log('count outside', count);
+    let entry = new UrlEntry({
+      id: count,
+      originalUrl: url
+    });
+    
+    lettentry.originalUrl;
+    results = {
+    }
+    entry.save();
+  } else if (exists) {
+    
+  }
   
 }
 
