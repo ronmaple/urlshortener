@@ -13,6 +13,8 @@ const app = express();
 
 // const counter = require('./counter');
 
+// async problems --- redo all 
+
 // let count = 0; not global ?
 let results = {}
 
@@ -51,22 +53,23 @@ function checkIfExists(url) {
     });
 }
 
-function counter(url) {
-  let n = 0;
-  console.log('inside counter');
-    UrlEntry
-      .find({})
-      .sort({id: -1})
-      .exec( (err, data) => {
-        if (err) console.error(err);
-        console.log('data0 in counter', data[0]);
-        const { id } = data[0];
-        console.log('id', id);
-        n = id + 1;
-      });
-  console.log('count in after id+1', n);
-  return n;
-}
+// function counter(url) {
+//   let n = 0;
+//   console.log('inside counter');
+//     UrlEntry
+//       .find({})
+//       .sort({id: -1})
+//       .exec( (err, data) => {
+//         if (err) console.error(err);
+//         console.log('data0 in counter', data[0]);
+//         const { id } = data[0];
+//         console.log('id', id);
+//         n = id + 1;
+//       });
+//   console.log('count in after id+1', n);
+//   return n;
+// }
+
 // helper functions
 const createEntry = function(url) {
   let n = 0;
@@ -75,7 +78,7 @@ const createEntry = function(url) {
   let exists = checkIfExists(url);
   
   if (!exists) {
-    n = counter(url);
+    // n = counter(url);
     console.log('count outside', n);
     let entry = new UrlEntry({
       id: n,
@@ -83,6 +86,8 @@ const createEntry = function(url) {
     });
     
     let original_url = entry.originalUrl; // change this variable name to original_url for simplicity
+    // let n = UrlEntry.length();
+    // console.log(UrlEntry)
     
     results = {
       original_url,
@@ -94,7 +99,7 @@ const createEntry = function(url) {
     return results;
 
   } else if (exists) {
-    
+    return 'exists'
   }
   
 }
