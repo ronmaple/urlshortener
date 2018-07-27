@@ -11,7 +11,9 @@ const cors = require('cors');
 
 const app = express();
 
-let count = 0;
+const counter = require('./counter');
+
+// let count = 0; not global ?
 let results = {}
 
 // mount body-parser
@@ -59,11 +61,12 @@ function counter(url) {
         const { id } = data[0];
         count = id + 1;
       });
-  
+  console.log('count in after id+1', count);
   return count;
 }
 // helper functions
 const createEntry = function(url) {
+  
   console.log('url in createEntry', url);
   console.log('count in createEntry', count);
   let exists = checkIfExists(url);
@@ -115,7 +118,6 @@ app.get("/api/hello", function (req, res) {
 // app.post // url -> check DNS -> check if exists in MDB-> enter / get from MDB
 app.post('/api/shorturl/new', (req, res) => {
   console.log('req.body', req.body);
-
   let url = req.body.url;
   console.log('url', req.body.url);
   
