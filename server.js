@@ -42,13 +42,22 @@ function checkIfExists(url) {
     .exec( function(err, data) {
       if (err) console.error(err);
       
-      if (data == []) {
+      if (data === []) {
         console.log('data does not exists: ', data);
         
-        let entry = new UrlEntry({
-          id: n,
-          originalUrl: url
-        }) 
+        UrlEntry.find({}, (err, data) => {
+          if (err) console.error(err);
+          
+          let n = data.length;
+          
+          console.log('n', n);
+          
+          let entry = new UrlEntry({
+            id: n,
+            originalUrl: url
+          })
+        })
+
       }
     
     });
