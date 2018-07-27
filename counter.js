@@ -1,8 +1,11 @@
 const mongoose = require('mongoose');
 mongoose.connect(process.env.MONGOLAB_URI);
 
-console.log(mongoose.Schema);
+// console.log(mongoose);
 
+// const UrlEntry = mongoose.model('UrlEntry').schema;
+// console.log('urlentry', UrlEntry);
+// console.log(mongoose);
 // module.exports = function() {
 //     console.log('inside counter');
 //     UrlEntry
