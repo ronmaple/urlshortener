@@ -38,18 +38,19 @@ function checkIfExists(url) {
   console.log('checkIfExists called, url:', url);
   console.log(typeof url);
   UrlEntry
-    .find({ originalUrl: 'www.reddit.com' })
+    .find({ originalUrl: url })
     .exec( function(err, data) {
-      console.log('url inside', url);
       if (err) console.error(err);
-      console.log('checkIfExists', data);
-    
-      // if empty array ==> doesn't exist, return false
-      if (data === []) {
-        return false;
-      } else { 
-        return true; 
+      
+      if (data == []) {
+        console.log('data does not exists: ', data);
+        
+        let entry = new UrlEntry({
+          id: n,
+          originalUrl: url
+        }) 
       }
+    
     });
 }
 
