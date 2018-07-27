@@ -56,8 +56,10 @@ function checkIfExists(url) {
             id: n,
             originalUrl: url
           })
+          
+          entry.save();
+          
         })
-
       }
     
     });
