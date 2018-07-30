@@ -29,7 +29,7 @@ app.get("/api/hello", (req, res) => res.json({ greeting: 'hello API' }) );
 app.post("/api/shorturl/new", (req, res) => {
     let url = req.body.url;
     console.log('url', url);
-
+    
     dns.lookup(url, (err, address, family) => {
       console.log('dns.lookup. address:', address, 'url', url);
         if (address !== undefined) {
@@ -37,9 +37,10 @@ app.post("/api/shorturl/new", (req, res) => {
             UrlEntry
                 .find({ originalUrl: url})
                 .exec( (err, data) => {
+                    
                     if (err) console.log(err);
-
-                    if (data === []) {
+              
+                    if (data.length == 0) {
                         console.log('data not in db', data);
 
                         UrlEntry.find({}, (err, data) => {
@@ -55,6 +56,18 @@ app.post("/api/shorturl/new", (req, res) => {
                                 original_url: entry.originalUrl,
                                 count: entry.id
                             })
+                        })
+                    } else {
+                      console.log('data in db', data);
+                      UrlEntry
+                        .find({ originalUrl: url})
+                        .exec((err, data) => {
+                          if (err) console.log(err);
+                        
+                          res.json({
+                            original_url: data[0].originalUrl,
+                            count: data[0].id
+                          })
                         })
                     }
                 })
