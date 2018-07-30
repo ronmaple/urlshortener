@@ -30,8 +30,17 @@ app.post("/api/shorturl/new", (req, res) => {
   let postURL = req.body.url;
   console.log('posturl', postURL);
   
-  let indexHTTPS = postURL.indexOf('https://' || 'http://') == undefined ? 0 : postURL.indexOf('https://' || 'http://');
-  let url = postURL.splice(0, postURL);
+  let splitHTTPS = postURL.split('https://');
+  let url;
+  
+  console.log(splitHTTPS);
+  if (splitHTTPS.length > 0) {
+    url = splitHTTPS[1];
+  } else {
+    url = postURL;
+  }
+  
+  console.log('url post slice', url);
   
   
   dns.lookup(url, (err, address, family) => {
@@ -78,6 +87,8 @@ app.post("/api/shorturl/new", (req, res) => {
       }
   });
 })
+
+app.
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
