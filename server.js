@@ -88,7 +88,18 @@ app.post("/api/shorturl/new", (req, res) => {
   });
 })
 
-app.
+app.get('/api/shorturl/new/:count', (req, res) => {
+  let count = req.params.count;
+  console.log(typeof count);
+  UrlEntry.find({ id: parseInt(count) }, (err, data) => {
+    if (err) console.log(err);
+    console.log('data', data);
+    let url = data[0].originalUrl;
+    console.log('url', url);
+    
+    res.redirect(`https://${url}`);
+  })
+})
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
